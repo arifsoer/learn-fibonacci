@@ -20,4 +20,4 @@ EXPOSE 3030
 
 ENV TZ=Asia/Jakarta
 
-CMD ["yarn","start:prod"]
+CMD ["yarn","start"]
