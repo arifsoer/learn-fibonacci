@@ -16,7 +16,7 @@ COPY --chown=node:node . .
 
 # RUN cp .env.prod .env
 
-EXPOSE 4040
+EXPOSE 3030
 
 ENV TZ=Asia/Jakarta
 

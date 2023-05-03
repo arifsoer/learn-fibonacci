@@ -1,0 +1,52 @@
+---
+apiVersion: "apps/v1"
+kind: "Deployment"
+metadata:
+  name: "be-sample"
+  namespace: "default"
+  labels:
+    app: "be-sample"
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: "be-sample"
+  template:
+    metadata:
+      labels:
+        app: "be-sample"
+    spec:
+      containers:
+      - name: "sample-sha256-1"
+        image: "asia-southeast2-docker.pkg.dev/pms-pi/lms-eu-be/sample@sha256:cd401f7532c9bdfebee1a76a97f6fdb30642bc555196bb11cd3d6c073c2529d2"
+        volumeMounts:
+          - name: env
+            mountPath: /app
+            readOnly: True
+      volumes:
+        - name: env
+          configMap:
+            name: be-env
+            defaultMode: 0755
+---
+apiVersion: "autoscaling/v2"
+kind: "HorizontalPodAutoscaler"
+metadata:
+  name: "be-sample-hpa-wxzl"
+  namespace: "default"
+  labels:
+    app: "be-sample"
+spec:
+  scaleTargetRef:
+    kind: "Deployment"
+    name: "be-sample"
+    apiVersion: "apps/v1"
+  minReplicas: 1
+  maxReplicas: 5
+  metrics:
+  - type: "Resource"
+    resource:
+      name: "cpu"
+      target:
+        type: "Utilization"
+        averageUtilization: 80
