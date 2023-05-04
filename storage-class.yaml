@@ -3,7 +3,7 @@ kind: StorageClass
 metadata:
   name: gold
 provisioner: kubernetes.io/gce-pd
-volumeBindingMode: Immediate
+volumeBindingMode: WaitForFirstConsumer
 allowVolumeExpansion: true
 reclaimPolicy: Delete
 parameters:
