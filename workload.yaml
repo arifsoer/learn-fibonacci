@@ -23,10 +23,15 @@ spec:
           - name: env
             mountPath: /app/.env
             readOnly: true
+          - mountPath: /app/uploads
+            name: app-storage
     volumes:
       - name: env
         configMap:
           name: be-env
+      - name: app-storage
+        persistentVolumeClaim:
+          claimName: webapps-storage
 ---
 apiVersion: "autoscaling/v2"
 kind: "HorizontalPodAutoscaler"
