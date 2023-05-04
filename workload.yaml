@@ -21,13 +21,12 @@ spec:
         image: "asia-southeast2-docker.pkg.dev/pms-pi/lms-eu-be/sample@sha256:cd401f7532c9bdfebee1a76a97f6fdb30642bc555196bb11cd3d6c073c2529d2"
         volumeMounts:
           - name: env
-            mountPath: /app
-            readOnly: True
-      volumes:
-        - name: env
-          configMap:
-            name: be-env
-            defaultMode: 0755
+            mountPath: /app/.env
+            readOnly: true
+    volumes:
+      - name: env
+        configMap:
+          name: be-env
 ---
 apiVersion: "autoscaling/v2"
 kind: "HorizontalPodAutoscaler"
