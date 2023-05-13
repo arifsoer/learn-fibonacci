@@ -1,18 +1,27 @@
-require("dotenv").config();
 const express = require("express");
 const redis = require("redis");
+const multer = require('multer');
+const cors = require('cors');
+
+const config = require('./configFile/env')
 
 const app = express();
 
+app.use(cors())
+
+const upload = multer({dest: 'uploads/'})
+
 const router = express.Router();
 
-const redisHost = process.env.REDIS_HOST || "localhost";
-const redisPort = process.env.REDIS_PORT || 6379;
+const redisHost = config.redisHost;
+const redisPort = config.redisPort;
 
-const redisClient = redis.createClient({
+let redisClient = null
+redisClient = redis.createClient({
   url: `redis://${redisHost}:${redisPort}`
 })
-redisClient.connect()
+redisClient.connect().catch((err) => console.log(err))
+
 
 redisClient.on('connect', (resp) => {
   console.log('Redis connected');
@@ -24,6 +33,13 @@ const basePath = process.env.BASE_PATH ?? "/api/dev";
 router.get("/", (req, res) => {
   res.send("from base route");
 });
+
+router.post("/upload", upload.single('file'), (req, res) => {
+  res.send({
+    message: "upload success",
+    data: req.file
+  })
+})
 
 router.get("/fibonacci", (req, res) => {
   let num_elements = null;
