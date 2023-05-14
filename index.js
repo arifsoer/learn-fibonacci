@@ -37,7 +37,8 @@ router.get("/", (req, res) => {
 router.post("/upload", upload.single('file'), (req, res) => {
   res.send({
     message: "upload success",
-    data: req.file
+    data: req.file,
+    hostname: process.env.HOSTNAME ?? 'not found'
   })
 })
 
