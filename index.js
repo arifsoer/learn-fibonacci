@@ -3,13 +3,19 @@ const redis = require("redis");
 const multer = require('multer');
 const cors = require('cors');
 
+const apiGoogle = require('./learn-gke-386606-ef27722f1391.json')
+
+const multerGoogleStorage = require('multer-cloud-storage')
+
 const config = require('./configFile/env')
 
 const app = express();
 
 app.use(cors())
 
-const upload = multer({dest: 'uploads/'})
+const upload = multer({storage: multerGoogleStorage.storageEngine({
+  credentials: apiGoogle
+})})
 
 const router = express.Router();
 
