@@ -38,7 +38,10 @@ const PORT = 3030;
 const basePath = process.env.BASE_PATH ?? "/api/dev";
 
 router.get("/", (req, res) => {
-  res.send("from base route");
+  res.send({
+    message: 'successfully connected',
+    source: process.env.HOSTNAME ?? 'localhost'
+  });
 });
 
 // router.post("/upload", upload.single('file'), (req, res) => {
@@ -72,7 +75,11 @@ router.get("/fibonacci", (req, res) => {
       fibonacci: fibonacci,
       sorted: sorted,
     };
-    res.send(result_array);
+    res.send({
+      message: 'success',
+      data: result_array,
+      source: process.env.HOSTNAME ?? 'localhost'
+    });
   } else {
     res.status("400").send("Invalid range of values");
   }
@@ -84,7 +91,10 @@ router.get("/redis", async (req, res) => {
   try {
     await redisClient.set('key', param.toString())
     const fromRedis = await redisClient.get('key');
-    res.status(200).send(fromRedis)
+    res.status(200).send({
+      message: fromRedis,
+      source: process.env.HOSTNAME ?? 'localhost'
+    })
   } catch (error) {
     console.log(error)
     res.status(500).send('Error');
