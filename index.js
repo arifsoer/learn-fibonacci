@@ -62,7 +62,7 @@ router.get("/fibonacci", (req, res) => {
     // console.log(req.body.elements)
   }
 
-  if (1 <= num_elements && num_elements <= 100) {
+  if (1 <= num_elements && num_elements <= 1000000) {
     const fibonacci = fibonacciSeries(num_elements - 1);
 
     /* Sort the  sequence generated, in the following manner:
@@ -77,7 +77,7 @@ router.get("/fibonacci", (req, res) => {
     };
     res.send({
       message: 'success',
-      data: result_array,
+      data: result_array.fibonacci.length,
       source: process.env.HOSTNAME ?? 'localhost'
     });
   } else {
