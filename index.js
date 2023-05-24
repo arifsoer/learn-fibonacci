@@ -3,7 +3,7 @@ const redis = require("redis");
 const multer = require('multer');
 const cors = require('cors');
 
-const apiGoogle = require('./learn-gke-386606-ef27722f1391.json')
+// const apiGoogle = require('./learn-gke-386606-ef27722f1391.json')
 
 const multerGoogleStorage = require('multer-cloud-storage')
 
@@ -13,9 +13,10 @@ const app = express();
 
 app.use(cors())
 
-const upload = multer({storage: multerGoogleStorage.storageEngine({
-  credentials: apiGoogle
-})})
+// const upload = multer({storage: multerGoogleStorage.storageEngine({
+//   credentials: apiGoogle
+// })})
+// const upload = multer({dest: '/'})
 
 const router = express.Router();
 
@@ -40,13 +41,13 @@ router.get("/", (req, res) => {
   res.send("from base route");
 });
 
-router.post("/upload", upload.single('file'), (req, res) => {
-  res.send({
-    message: "upload success",
-    data: req.file,
-    hostname: process.env.HOSTNAME ?? 'not found'
-  })
-})
+// router.post("/upload", upload.single('file'), (req, res) => {
+//   res.send({
+//     message: "upload success",
+//     data: req.file,
+//     hostname: process.env.HOSTNAME ?? 'not found'
+//   })
+// })
 
 router.get("/fibonacci", (req, res) => {
   let num_elements = null;
