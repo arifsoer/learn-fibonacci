@@ -3,7 +3,7 @@ const redis = require("redis");
 const multer = require('multer');
 const cors = require('cors');
 
-const apiGoogle = require('./learn-gke-386606-ef27722f1391.json')
+const apiGoogle = require('./cloudconfig/learn-gke-386606-ef27722f1391.json')
 
 const multerGoogleStorage = require('multer-cloud-storage')
 
@@ -14,7 +14,14 @@ const app = express();
 app.use(cors())
 
 const upload = multer({storage: multerGoogleStorage.storageEngine({
-  credentials: apiGoogle
+  acl: 'publicRead',
+  projectId: 'learn-gke-386606',
+  destination: 'upload/',
+  bucket: 'learn-gke-2305',
+  keyFilename: './cloudconfig/learn-gke-386606-ef27722f1391.json',
+  filename: (req, file, cb) => {
+    cb(null, `/upload/${file.originalname}`)
+  }
 })})
 
 const router = express.Router();
@@ -26,7 +33,7 @@ let redisClient = null
 redisClient = redis.createClient({
   url: `redis://${redisHost}:${redisPort}`
 })
-redisClient.connect().catch((err) => console.log(err))
+// redisClient.connect().catch((err) => console.log(err))
 
 
 redisClient.on('connect', (resp) => {
@@ -41,9 +48,8 @@ router.get("/", (req, res) => {
 });
 
 router.post("/upload", upload.single('file'), (req, res) => {
-  res.send({
+  res.json({
     message: "upload success",
-    data: req.file,
     hostname: process.env.HOSTNAME ?? 'not found'
   })
 })
