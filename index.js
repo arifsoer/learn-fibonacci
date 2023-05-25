@@ -34,7 +34,7 @@ let redisClient = null
 redisClient = redis.createClient({
   url: `redis://${redisHost}:${redisPort}`
 })
-// redisClient.connect().catch((err) => console.log(err))
+redisClient.connect().catch((err) => console.log(err))
 
 
 redisClient.on('connect', (resp) => {
