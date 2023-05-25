@@ -20,7 +20,8 @@ const upload = multer({storage: multerGoogleStorage.storageEngine({
   bucket: 'learn-gke-2305',
   keyFilename: './cloudconfig/learn-gke-386606-ef27722f1391.json',
   filename: (req, file, cb) => {
-    cb(null, `/upload/${file.originalname}`)
+    const date = Date.now();
+    cb(null, `${date.toString()}-${file.originalname}`)
   }
 })})
 
@@ -53,6 +54,7 @@ router.get("/", (req, res) => {
 router.post("/upload", upload.single('file'), (req, res) => {
   res.json({
     message: "upload success",
+    data: req.file,
     hostname: process.env.HOSTNAME ?? 'not found'
   })
 })
