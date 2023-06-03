@@ -14,6 +14,12 @@ RUN yarn install
 
 COPY --chown=node:node . .
 
+RUN mkdir data
+
+RUN mkdir temp
+
+RUN echo '[]' > data/data.json
+
 # RUN cp .env.prod .env
 
 EXPOSE 3030
